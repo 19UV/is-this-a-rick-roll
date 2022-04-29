@@ -22,6 +22,8 @@ class App {
 	};
 
 	async check_url() {
+		this.response.innerHTML = "";
+		
 		const url = this.url_input.value.trim();
 		if(!URL_REGEX.test(url)) { // Invalid URL
 			// throw new Error("Invalid Url");
