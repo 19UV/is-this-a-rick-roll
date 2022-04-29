@@ -29,15 +29,22 @@ app.get('/check_url', async (req, res) => {
     return
   }
 
-  // TODO: Add handling if the url can't be reached
-  const checkResponse = await axios.get(checkUrl)
-  const endUrl = checkResponse.request.res.responseUrl
-
   let isRickRoll = false
-  for (const rr of RICK_ROLL_URLS) {
-    if (endUrl.includes(rr)) {
-      isRickRoll = true
-      break
+
+  let endUrl = ''
+  try {
+    const checkResponse = await axios.get(checkUrl)
+    endUrl = checkResponse.request.res.responseUrl
+  } catch (err) {
+    isRickRoll = true
+  }
+
+  if (!isRickRoll) { // If the url is valid
+    for (const rr of RICK_ROLL_URLS) {
+      if (endUrl.includes(rr)) {
+        isRickRoll = true
+        break
+      }
     }
   }
 
