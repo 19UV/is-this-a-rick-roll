@@ -1,15 +1,14 @@
 const express = require('express')
 const axios = require('axios')
 const path = require('path')
+const fs = require('fs')
 
 // Source: https://ihateregex.io/expr/url/
 const URL_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)$/
 
-const RICK_ROLL_URLS = [
-  'youtube.com/watch?v=dQw4w9WgXcQ',
-  'youtu.be/dQw4w9WgXcQ'
-  // TODO: Add More
-]
+const RICK_ROLL_URLS = fs.readFileSync('./rick_roll_endpoints.txt', { encoding: 'utf8' }) // Load File
+  .replace('\r', '').split('\n').map(s => s.trim()) // Get Lines
+  .filter(s => ((s.length > 0) && (s[0] !== '#'))) // Remove Empty Lines and Comments
 
 const frontendDir = path.join(__dirname, 'frontend')
 
