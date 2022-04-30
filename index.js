@@ -53,6 +53,6 @@ app.get('/check_url', async (req, res) => {
   }))
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('server started')
 })
