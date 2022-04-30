@@ -22,19 +22,19 @@ class App {
 	};
 
 	async check_url() {
-		this.response.innerHTML = "";
+		this.response.className = "normal_text";
+		this.response.innerHTML = "Checking...";
 		
 		const url = this.url_input.value.trim();
 		if(!URL_REGEX.test(url)) { // Invalid URL
-			// throw new Error("Invalid Url");
-			alert("Invalid Url");
+			this.response.className = "error_text";
+			this.response.innerHTML = "Error: Please Enter a Valid URL";
 			return;
 		}
 
 		const query_string = new URLSearchParams({ url }).toString();
 		const request_url = `${document.location.origin}/check_url?${query_string}`;
 		
-		console.log(request_url);
 		const response = await fetch(request_url);
 		if(!response.ok) {
 			console.error("Request Failed");
@@ -43,8 +43,13 @@ class App {
 		}
 
 		const json = await response.json();
-		this.response.innerHTML = json.value ? "Yes" : "No";
-		console.log(json);
+		if(json.value) { // Rick Roll Detected
+			this.response.className = "warn_text";
+			this.response.innerHTML = "Rick Roll Detected";
+		} else {
+			this.response.className = "normal_text";
+			this.response.innerHTML = "You're Good, No Rick Roll Here (&#10004;)";
+		}
 	}
 };
 
